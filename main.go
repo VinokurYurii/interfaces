@@ -1,58 +1,41 @@
 package main
 
-import (
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-)
+import "fmt"
 
-type englishBot struct{}
-type spanishBot struct{}
-
-type logWritter struct{}
-
-func (logWritter) Write(p []byte) (n int, err error) {
-	fmt.Println((string(p)))
-	return len(p), nil
+type triangle struct {
+	base   float64
+	height float64
 }
 
-type bot interface {
-	getGreeting() string
+type square struct {
+	sideLength float64
+}
+
+type shape interface {
+	area() float64
+}
+
+func (t triangle) area() float64 {
+	return 0.5 * t.base * t.height
+}
+
+func (s square) area() float64 {
+	return s.sideLength * s.sideLength
+}
+
+func printArea(s shape) {
+	fmt.Printf("Area is: %v", s.area())
 }
 
 func main() {
-	eb := englishBot{}
-	sb := spanishBot{}
-
-	printGreating(eb)
-	printGreating(sb)
-
-	resp, err := http.Get("http://google.com")
-
-	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+	t := triangle{
+		base:   12.5,
+		height: 12,
 	}
-	io.Copy(logWritter{}, resp.Body)
-	// bs := make([]byte, 99999)
-	// n, respReadError := resp.Body.Read(bs)
+	s := square{
+		sideLength: 5.0,
+	}
 
-	// if respReadError != nil {
-	// 	fmt.Println("Error reading response body:", respReadError)
-	// 	os.Exit(1)
-	// }
-	// fmt.Printf("Readed %v bytes, result is %v", n, string(bs))
-}
-
-func printGreating(b bot) {
-	println(b.getGreeting())
-}
-
-func (englishBot) getGreeting() string {
-	return "Hello, World!"
-}
-
-func (spanishBot) getGreeting() string {
-	return "Hola!"
+	printArea(t)
+	printArea(s)
 }
