@@ -2,12 +2,20 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 )
 
 type englishBot struct{}
 type spanishBot struct{}
+
+type logWritter struct{}
+
+func (logWritter) Write(p []byte) (n int, err error) {
+	fmt.Println((string(p)))
+	return len(p), nil
+}
 
 type bot interface {
 	getGreeting() string
@@ -26,14 +34,15 @@ func main() {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
-	bs := make([]byte, 99999)
-	n, respReadError := resp.Body.Read(bs)
+	io.Copy(logWritter{}, resp.Body)
+	// bs := make([]byte, 99999)
+	// n, respReadError := resp.Body.Read(bs)
 
-	if respReadError != nil {
-		fmt.Println("Error reading response body:", respReadError)
-		os.Exit(1)
-	}
-	fmt.Printf("Readed %v bytes, result is %v", n, string(bs))
+	// if respReadError != nil {
+	// 	fmt.Println("Error reading response body:", respReadError)
+	// 	os.Exit(1)
+	// }
+	// fmt.Printf("Readed %v bytes, result is %v", n, string(bs))
 }
 
 func printGreating(b bot) {
