@@ -26,7 +26,14 @@ func main() {
 		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
-	fmt.Println(resp)
+	bs := make([]byte, 99999)
+	n, respReadError := resp.Body.Read(bs)
+
+	if respReadError != nil {
+		fmt.Println("Error reading response body:", respReadError)
+		os.Exit(1)
+	}
+	fmt.Printf("Readed %v bytes, result is %v", n, string(bs))
 }
 
 func printGreating(b bot) {
