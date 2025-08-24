@@ -30,6 +30,8 @@ func main() {
 	}
 }
 
-func feed(animal pets.Eater, amount uint8) (uint8, error) {
+func feed(animal pets.EaterWalker, amount uint8) (uint8, error) {
+	fmt.Println("First, let's walk!")
+	fmt.Println(animal.Walk())
 	return animal.Eat(amount)
 }
