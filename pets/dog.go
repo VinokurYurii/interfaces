@@ -1,16 +1,16 @@
 package pets
 
 type Dog struct {
-	Name string
+	Animal
 }
 
-func (c *Dog) Eat(amount uint8) (uint8, error) {
+func (_d *Dog) Eat(amount uint8) (uint8, error) {
 	if amount > 15 {
 		return 0, newError("Dog can't eat that much", nil)
 	}
 	return amount, nil
 }
 
-func (c *Dog) Walk() string {
+func (_d *Dog) Walk() string {
 	return "Dog is walking"
 }
