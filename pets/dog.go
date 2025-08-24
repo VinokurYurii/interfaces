@@ -10,3 +10,7 @@ func (c *Dog) Eat(amount uint8) (uint8, error) {
 	}
 	return amount, nil
 }
+
+func (c *Dog) Walk() string {
+	return "Dog is walking"
+}
